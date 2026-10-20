@@ -1,0 +1,104 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="title" content="Email Verification - Fhobs Solutions">
+  <meta name="description" content="Verify your email address for your Fhobs Solutions account.">
+  <title>Email Verification - Fhobs Solutions</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Verify Your Email</h2>
+
+    <p style="text-align: center; margin: 15px 0; line-height: 1.6;">
+      Welcome to Fhobs Solutions! Please check your email inbox
+      for a verification link to activate your account.
+    </p>
+
+    <div
+      id="alert"
+      class="alert"
+      role="status"
+      aria-live="polite"
+    ></div>
+
+    <div id="resendBlock" style="margin-top: 25px;">
+      <h3 style="margin-bottom: 10px;">Didn't Receive the Email?</h3>
+
+      <p style="margin-bottom: 15px; line-height: 1.5;">
+        Check your spam folder or request a new verification link below.
+      </p>
+
+      <form id="resendForm">
+        <div class="form-group">
+          <label for="resendEmail">Email Address</label>
+          <input
+            type="email"
+            id="resendEmail"
+            name="email"
+            placeholder="Enter your registered email"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <button type="submit">
+          Resend Verification Email
+        </button>
+      </form>
+    </div>
+
+    <div class="links" style="margin-top: 20px; text-align: center;">
+      <p>
+        Already verified your account?
+        <a href="login.html">Log In</a>
+      </p>
+
+      <p style="margin-top: 12px;">
+        <a href="register.html">Create an Account</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+     async function verifyEmail() {
+            const message = document.getElementById("message");
+            const loginLink = document.getElementById("loginLink");
+            const resendLink = document.getElementById("resendLink");
+
+            const token =
+                new URLSearchParams(window.location.search).get("token");
+
+            if (!token) {
+                message.textContent = "Verification token is missing.";
+                resendLink.hidden = false;
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    `http://localhost:5000/api/auth/verifyEmail/${token}`
+                );
+
+                const data = await response.json();
+
+                message.textContent = data.message;
+                if(response.ok){
+                window.location.href= "login.html"
+
+                }else{
+                        alert("Email not verified")
+                }
+            } catch (error) {
+                message.textContent =
+                    "Unable to connect to the server. Please try again.";
+            }
+        }
+
+  </script>
+</body>
+</html>
+```

@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Fhobs Solutions</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="container">
+    <h2>Fhobs Solutions</h2>
+    <p>Create your account to get started.</p>
+
+    <div id="alert" class="alert" role="alert"></div>
+
+    <form id="registerForm">
+
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input
+          type="text"
+          id="fullName"
+          name="fullName"
+          placeholder="Enter your full name"
+          autocomplete="name"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Enter your email"
+          autocomplete="email"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Create a password"
+          autocomplete="new-password"
+          minlength="8"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          placeholder="Enter your password again"
+          autocomplete="new-password"
+          minlength="8"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="role">Account Classification</label>
+        <select id="role" name="role" required>
+          <option value="Student">Student</option>
+          <option value="Tutor">Tutor</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="studentCategoryGroup">
+        <label for="studentCategory">Student Category</label>
+        <select id="studentCategory" name="studentCategory" required>
+          <option value="IOTS">IOTS Student</option>
+          <option value="IT">IT Student</option>
+          <option value="Normal Basic Computer">
+            Normal Basic Computer Student
+          </option>
+        </select>
+      </div>
+
+      <button type="submit">Create Account</button>
+
+    </form>
+
+    <div class="links">
+      <a href="login.html">Already have an account? Login</a>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+
+  <script>
+    const roleSelect = document.getElementById('role');
+    const categoryGroup = document.getElementById('studentCategoryGroup');
+    const categorySelect = document.getElementById('studentCategory');
+
+    function toggleCategory() {
+      const isStudent = roleSelect.value === 'Student';
+
+      categoryGroup.hidden = !isStudent;
+      categorySelect.required = isStudent;
+
+      if (!isStudent) {
+        categorySelect.value = '';
+      } else if (!categorySelect.value) {
+        categorySelect.selectedIndex = 0;
+      }
+    }
+
+    roleSelect.addEventListener('change', toggleCategory);
+
+    document.getElementById('registerForm')
+      .addEventListener('submit', function (event) {
+        const password = document.getElementById('password').value;
+        const confirmPassword =
+          document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+          event.preventDefault();
+
+          const alertBox = document.getElementById('alert');
+          alertBox.textContent = 'Passwords do not match.';
+          alertBox.hidden = false;
+        }
+      });
+
+    toggleCategory();
+  </script>
+
+</body>
+</html>
